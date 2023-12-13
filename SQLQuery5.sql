@@ -1,3 +1,4 @@
+
 CREATE DATABASE Assessment05Db;
 
 USE Assessment05Db;
@@ -7,17 +8,18 @@ IF EXISTS (SELECT 1 FROM sys.schemas WHERE name = 'bank')
 
 CREATE SCHEMA bank;
 
+
 CREATE TABLE bank.Customer (
     CId INT PRIMARY KEY,
     CName NVARCHAR(100) NOT NULL,
     CEmail NVARCHAR(100) UNIQUE NOT NULL,
-    CPwd NVARCHAR(100) NOT NULL,
+    CPwd AS RIGHT(CName, 2) + CAST(CId AS NVARCHAR) + LEFT(Contact, 2) PERSISTED,
     Contact NVARCHAR(100) NOT NULL
 );
 
 CREATE TABLE bank.MailInfo (
     MailTo NVARCHAR(100) NOT NULL,
-	MailDate DATE NOT NULL,
+    MailDate DATE NOT NULL,
     MailMessage NVARCHAR(1000) NOT NULL
 );
 
@@ -32,13 +34,13 @@ BEGIN
     FROM inserted;
 END;
 
-INSERT INTO bank.Customer (CId, CName, CEmail, CPwd, Contact)
+
+INSERT INTO bank.Customer (CId, CName, CEmail, Contact)
 VALUES
-    (1, 'Customer1', 'customer1@email.com', 'password1', 'contact1'),
-    (2, 'Customer2', 'customer2@email.com', 'password2', 'contact2'),
-    (3, 'Customer3', 'customer3@email.com', 'password3', 'contact3');
+    (1, 'Customer1', 'customer1@email.com', 'contact1'),
+    (2, 'Customer2', 'customer2@email.com', 'contact2'),
+    (3, 'Customer3', 'customer3@email.com', 'contact3');
 
 
 SELECT * FROM bank.Customer;
 SELECT * FROM bank.MailInfo;
-
